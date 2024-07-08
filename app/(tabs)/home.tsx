@@ -2,12 +2,19 @@ import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { formatLottery, validateLottery } from "@/libs/formatLottery";
 import { router } from "expo-router";
+import utils from "@/libs";
+import { useAnimatedKeyboard, useAnimatedStyle } from "react-native-reanimated";
 
 const Home = () => {
   const [value, setValue] = useState<any>();
   const [error, setError] = useState<boolean>(false);
+  const keyboard = useAnimatedKeyboard();
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateY: -keyboard.height.value }],
+  }));
+
   return (
     <SafeAreaView>
       <View className="w-full p-5 pt-16 justify-start h-full">
@@ -26,14 +33,14 @@ const Home = () => {
             }`}
           >
             <TextInput
-              className={`font-medium text-base duration-500 text-black  ${
+              className={`font-medium text-base duration-500 text-black h-full  ${
                 value && " text-3xl"
               } ${error && "text-red-500"}`}
               value={value}
               style={value && { letterSpacing: 5 }}
               onChangeText={(e: any) => {
                 setError(false);
-                setValue(formatLottery(e.toUpperCase()));
+                setValue(utils.formatLottery(e.toUpperCase()));
               }}
               placeholder="Enter lottery number"
               placeholderTextColor={"#b5b5b5"}
@@ -47,7 +54,7 @@ const Home = () => {
           <TouchableOpacity
             className={`bg-black px-3 h-16 rounded-md my-5 items-center justify-center `}
             onPress={() => {
-              const result = validateLottery(value);
+              const result = utils.validateLottery(value);
               !result && setError(true);
               result && router.push(`/select-scheme?lotteryNo=${result[0]}`);
             }}

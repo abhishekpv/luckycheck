@@ -1,4 +1,3 @@
-import { formatLottery, validateLottery } from "./formatLottery";
-import { getAllLotteries } from "./getAllLotteries";
+import utils from "./utils";
 
-export default { formatLottery, validateLottery, getAllLotteries };
+export default utils;

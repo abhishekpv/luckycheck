@@ -2,13 +2,15 @@ import { View, Text, ImageBackground } from "react-native";
 import React from "react";
 import { images } from "@/constants";
 
-const LotteryCard = ({ lotteryNo }: any) => {
+const LotteryCard = ({ lotteryNo }: { lotteryNo: string }) => {
   return (
-    <View className={` rounded-md w-full overflow-hidden relative shadow-md shadow-gray-500`}>
+    <View
+      className={` rounded-md w-full overflow-hidden relative shadow-md shadow-gray-500`}
+    >
       <ImageBackground source={images.blackBg} resizeMode="cover">
         <View className="w-full h-32 flex-row justify-between p-3">
           <View className=" justify-between py-2 px-3">
-            <Text className="text-white font-bold tracking-[7]">
+            <Text className="text-white font-bold tracking-[7px]">
               {lotteryNo}
             </Text>
             <Text className="text-gray-300 tracking-[3] font-bold text-lg">

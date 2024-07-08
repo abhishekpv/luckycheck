@@ -1,17 +1,12 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getAllLotteries } from "@/libs/getAllLotteries";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import LotteryCard from "@/components/lotteryCard";
 import Loader from "@/components/Loader";
 import SchemeCard from "@/components/SchemeCard";
+import axios from "axios";
+import { endpoints } from "@/constants";
 
 type Scheme = {
   id: string;
@@ -25,8 +20,8 @@ const SelectLotteries = () => {
   const { lotteryNo } = useLocalSearchParams();
 
   const fetchData = async () => {
-    const result = await getAllLotteries();
-    setLotteries(result.data);
+    const result = await axios.get(endpoints.LOTTERIES_ENDPOINT);
+    setLotteries(result.data.data);
   };
 
   useEffect(() => {
@@ -37,7 +32,7 @@ const SelectLotteries = () => {
     <SafeAreaView>
       <View className="w-full justify-center min-h-[100vh] ">
         <View className="p-4 pb-0 pt-10 w-full justify-center border-b-[1px] border-b-gray-100">
-          <LotteryCard lotteryNo={lotteryNo} />
+          <LotteryCard lotteryNo={lotteryNo as string} />
           <Text className="pb-2  pt-5 font-bold text-xl">Select Scheme </Text>
         </View>
         <ScrollView
@@ -48,7 +43,11 @@ const SelectLotteries = () => {
           {lotteries ? (
             lotteries.map((item) => {
               return (
-                <SchemeCard item={item} key={item.id} lotteryNo={lotteryNo as string} />
+                <SchemeCard
+                  item={item}
+                  key={item.id}
+                  lotteryNo={lotteryNo as string}
+                />
               );
             })
           ) : (
